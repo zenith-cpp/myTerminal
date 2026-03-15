@@ -173,8 +173,7 @@ except ValueError:
 os.system("cls") # enables ansi color codes (CRUCIAL)
 try:
     print("Welcome to myTerminal.")
-    print("Made by Eidnoxon, 2025-2025. Use the code for whatever you want lol just give credits. pls :,c")
-    print("I am sorry if this app is full of bugs, i tried my best")
+    print("Made by Zenith (A.K.A PCPPTech), 2025.")
     command = 0
     os.chdir(f"C:\\Users\\{os.getlogin()}") # I know it was already done, but just in case yk
     while command != exit:

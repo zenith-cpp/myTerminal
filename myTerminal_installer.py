@@ -27,8 +27,14 @@ def main():
             pass
         with open("mt_userinputfield.txt", "a+") as file:
             pass
+        
+        print("Installation successful. You can close this window and run myTerminal.py")
+        print("Press ENTER to continue...")
+        input()
     except PermissionError:
         print(f"{COLOR_RED}[ERROR]{RESET} Couldn't install assets; insufficient permission.\n")
+        input()
+        input()
         quit()
 
 
