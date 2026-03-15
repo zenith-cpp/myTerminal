@@ -1,7 +1,7 @@
 # myTerminal
 
 A simple, custom terminal environment with a graphical installer and basic command support.  
-Created by **Eidnoxon (PCPPTech)** in 2025 as a fun and educational project.  
+Created by **Zenith** in 2025 as a fun and educational project.  
 You are free to use or modify the code — just give credits
 
 ---
@@ -18,12 +18,12 @@ myTerminal/
 
 ## Features
 
-- Cross-platform-ish terminal emulator using Python and `tkinter`
+- Terminal emulator using Python.
 - Basic shell-like commands:
   - `ls`, `cd`, `mkdir`, `rm`, `rmdir`, `touch`, `cat`, `more`
-  - `clear`, `help`, `exit`, `about myTerminal`
+  - `clear`, `help`, `exit`.
 - Customization options (colors, input styling)
-- `.mtpaths.txt` to store install location
+- `.mtpaths.txt` to store install location (creates it in the C:/Users/yourUser/ directory)
 - Graphical setup wizard to choose install directory
 
 ---
@@ -54,7 +54,7 @@ myTerminal/
 ## Customization
 
 - You can customize the colors by using the `setcolor` command inside the terminal.
-- You can also customize the input field by using the `sif` (`set input field`) command inside the terminal.
+- You can also customize the input field by using the `sif` (`set input field`) command inside the terminal. Restart to apply changes.
 ---
 
 ## Supported Commands (from inside the terminal)
@@ -91,20 +91,20 @@ myTerminal/
 ## Developer Notes
 
 - Code is written for fun and learning. Contributions or suggestions are welcome.
-- You can friend the creator on Discord: `eidnoxon`
+- You can friend the creator on Discord: `yikebones`
 
 ---
 
 ## License
 
-Open-source, use it for whatever — just credit **Eidnoxon (PCPPTech)**
+Open-source, use it for whatever — just credit **Zenith (A.K.A PCPPTech)**
 
 ---
 
 ## Errors and their reasons
 - `PermissionError`, or `Can't ...: Insufficient Permission`.
-- This error pretty much explains itself: It means that it can't do a certain operation because of the lack of permission. It can often be caused by e.g. trying to remove a folder while the folder is under use by another app.
+- This error pretty much explains itself: It means that it can't do a certain operation because of the lack of permission. It can often be caused by e.g. trying to remove a folder while the folder is under use by another app or process.
 I integrated a lot of PermissionError handling lines, so it will most likely won't make you exit the CLI once you encounter that error.
 - `FileNotFoundError`.
 - You encounter this error when trying to remove a file or a directory that `doesn't exist`. If you encounter this error when you try to run `myTerminal.py` and you even ran `myTerminal_installer.py` beforehand, the issue might be
-that your home directory isn't `C:/Users/[username]`. `myTerminal` creates all the text files that are used to store the user's customization data in `C:/Users/[username]`. Why? Because it is easily accessable.
+that your home directory isn't `C:/Users/[username]`. `myTerminal` creates all the text files that are used to store the user's customization data in `C:/Users/[username]`. Why? Because it is easily accessable. This problem can also happen on `linux`, as linux distros usually doesn't have `C:/Users/[your-username]` as their home directory, which is why this program is only compatible with Windows.
