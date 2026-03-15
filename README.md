@@ -10,7 +10,7 @@ You are free to use or modify the code — just give credits
 
 ```
 myTerminal/
-├── myTerminal_installer.py   # GUI-based installer to set up your terminal path
+├── myTerminal_installer.py   # Terminal-based installer. It will only make 3 text files at your home directory (C:/Users/[your-user])
 ├── myTerminal_main.py        # The terminal itself, with custom commands
 ```
 
@@ -24,7 +24,6 @@ myTerminal/
   - `clear`, `help`, `exit`.
 - Customization options (colors, input styling)
 - `.mtpaths.txt` to store install location (creates it in the C:/Users/yourUser/ directory)
-- Graphical setup wizard to choose install directory
 
 ---
 
