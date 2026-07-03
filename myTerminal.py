@@ -28,11 +28,11 @@ if len(sys.argv) > 1:
         print("version 1.1.0")
         quit()
     elif sys.argv[1] == "--about":
-        print("This is an open source terminal project made simply for fun by Eidnoxon(PCPPTech).\n")
+        print("This is an open source CLI project made simply for fun by Yikebones.\n")
         quit()
     else:
         print(f"{COLOR_GREEN}--version{RESET}: displays the version of myTerminal.")
-        print(f"{COLOR_GREEN}--about{RESET}: displays information about myTerminal.")
+        print(f"{COLOR_GREEN}--about{RESET}  : displays information about myTerminal.")
 else:
     pass
 user_pref_if = "" # `if` is short for `input field` in this case
@@ -133,17 +133,49 @@ def rmdir_process():
             print(f"Can't remove given folder: {e}")
     except PermissionError:
         print(f"Couldn't remove `{filename}`: Insufficient Permission.\n\n")
+
+
+
 def listdir_process():
     try:
+        folders_with_dots = []
+        files_with_dots = []
+        folders = []
+        files = []
         if len(os.listdir()) > 0:
-            print()
-            print(f"Content of {os.getcwd()}:")
             for i in os.listdir():
                 if os.path.isdir(i):
-                    print(f"{BACKGROUND_COLOR_GREEN}{COLOR_BLACK}[FOLDER]{RESET} {i}")
+                    if i.startswith("."):
+                        folders_with_dots.append(i)
+                    else:
+                        folders.append(i)
                 else:
-                    print(f"         {COLOR_BLUE}{i}{RESET}")
-            print() # new line after LS command finished, so it wont look bad
+                    if i.startswith("."):
+                        files_with_dots.append(i)
+                    else:
+                        files.append(i)
+            if files_with_dots:
+                for i in files_with_dots:
+                    _, ext = os.path.splitext(i)
+                    if ext:
+                        print(f"[{ext.replace(".", "").upper()}] {COLOR_GREEN}{i}{RESET}")
+                    else:
+                        print(f"[FILE] {COLOR_GREEN}{i}{RESET}")
+            if folders_with_dots:
+                for i in folders_with_dots:
+                    print(f"{BACKGROUND_COLOR_GREEN}{COLOR_BLACK}[FOLDER]{RESET} {COLOR_BLUE}{i}{RESET}")
+
+            if folders:
+                for i in folders:
+                    print(f"{BACKGROUND_COLOR_GREEN}{COLOR_BLACK}[FOLDER]{RESET} {COLOR_BLUE}{i}{RESET}")
+            
+            if files:
+                for i in files:
+                    _, ext = os.path.splitext(i)
+                    if ext:
+                        print(f"[{ext.replace(".", "").upper()}] {COLOR_GREEN}{i}{RESET}")
+                    else:
+                        print(f"[FILE] {COLOR_GREEN}{i}{RESET}")
         else:
             print(f"\n\t\tThis directory is {COLOR_RED}empty{RESET}.\n\n")
     except PermissionError:
@@ -173,7 +205,7 @@ except ValueError:
 os.system("cls") # enables ansi color codes (CRUCIAL)
 try:
     print("Welcome to myTerminal.")
-    print("Made by Zenith (A.K.A PCPPTech), 2025.")
+    print("Made by Yikebones, 2025. Use the source code however you want, just give credits.")
     command = 0
     os.chdir(f"C:\\Users\\{os.getlogin()}") # I know it was already done, but just in case yk
     while command != exit:
@@ -200,7 +232,7 @@ try:
                 {COLOR_GREEN}exit{RESET} - Terminates the program
                 {COLOR_GREEN}touch{RESET} {COLOR_BLUE}[FILENAME]{RESET} - Creates a file with the specified filename
                 {COLOR_GREEN}cat{RESET} {COLOR_BLUE}[FILENAME]{RESET} - Views file content (won’t work on directories)
-                {COLOR_GREEN}more{RESET} {COLOR_BLUE}[FILENAME]{RESET} - Same as {COLOR_RED}cat{RESET} lolz :3
+                {COLOR_GREEN}more{RESET} {COLOR_BLUE}[FILENAME]{RESET} - Same as {COLOR_RED}cat{RESET}
                 {COLOR_GREEN}cd{RESET} {COLOR_BLUE}[PATH]{RESET} or {COLOR_BLUE}..{RESET} - Changes directory to the given path (`cd ..` goes back)
                 {COLOR_GREEN}rm{RESET} {COLOR_BLUE}[FILENAME]{RESET} - Removes a file
                 {COLOR_GREEN}rmdir{RESET} {COLOR_BLUE}[DIRNAME]{RESET} - Removes a directory
@@ -212,28 +244,43 @@ try:
             """))
 
         elif command.lower().strip().startswith("ls"):  #! LS COMMAND AND ITS ALGORITHM
-            dirname = command[3:]
-            if len(dirname) > 0:
-                try:
-                    org_wd = os.getcwd()
-                    os.chdir(dirname)
+            dirname = command[3:].strip().lower()
+            mess = dirname.replace(dirname[7:].replace('"', ""), "") # this basically gets the --find part ._.
+            # check if `dirname` is not actually the command `find` e.g. `ls --find`
+            if mess.strip() != '--find' or mess.strip() != '--find ""':
+                if len(dirname) > 0:
+                    try:
+                        org_wd = os.getcwd()
+                        os.chdir(dirname)
+                        listdir_process()
+                        os.chdir(org_wd) # change back to the original directory once it is done
+                    except PermissionError:
+                        print(f"Can't access `{dirname}`: Insufficient Permission.\n\n")
+                    except FileNotFoundError:
+                        print(f"Directory `{COLOR_BLACK}{dirname}{RESET}` not found.\n\n")
+                    except NotADirectoryError:
+                        print(f"{COLOR_RED}Error{RESET}: {COLOR_BLUE}ls{RESET} can't scan files, only folders.")
+                        print(f"{COLOR_GREEN}[NOTE]{RESET} For that purpose, use {COLOR_BLUE}`cat`{RESET} or {COLOR_BLUE}`more`{RESET}.\n\n")
+                    except OSError:
+                        dirname = dirname.replace('"', "")
+                        temp_var = os.getcwd()
+                        os.chdir(dirname) # new dirname
+                        listdir_process()
+                        os.chdir(temp_var)
+                else:
                     listdir_process()
-                    os.chdir(org_wd) # change back to the original directory once it is done
-                except PermissionError:
-                    print(f"Can't access `{dirname}`: Insufficient Permission.\n\n")
-                except FileNotFoundError:
-                    print(f"Directory `{COLOR_BLACK}{dirname}{RESET}` not found.\n\n")
-                except NotADirectoryError:
-                    print(f"{COLOR_RED}Error{RESET}: {COLOR_BLUE}ls{RESET} can't scan files, only folders.")
-                    print(f"{COLOR_GREEN}[NOTE]{RESET} For that purpose, use {COLOR_BLUE}`cat`{RESET} or {COLOR_BLUE}`more`{RESET}.\n\n")
-                except OSError:
-                    dirname = dirname.replace('"', "")
-                    temp_var = os.getcwd()
-                    os.chdir(dirname) # new dirname
-                    listdir_process()
-                    os.chdir(temp_var)
             else:
-                listdir_process()
+                # this statement triggers when the 'dirname' is actually "| find". Now we need to get the name of the directory it is actually trying to find.
+                try:
+                    lf_dirname = dirname[7:].replace('"', "").strip() # this will get the folder name
+                    file = os.listdir()
+                    for i in file:
+                        if i == lf_dirname:
+                            print(f"{COLOR_RED}{lf_dirname}{RESET}")
+                            break
+                except OSError as e:
+                    print("OSERROR occured while trying to run this code; it's unclear why.")
+                    print("Original Error:", e)
 
         elif command.lower().strip().startswith("print-txt"):
             text_to_print = command[10:]
@@ -351,13 +398,10 @@ try:
         elif command.lower() == "about myterminal":
             print(textwrap.dedent(
                 f"""\
-                {COLOR_GREEN}myTerminal{RESET} was made by {COLOR_GREEN}Eidnoxon{RESET}, otherwise known as {COLOR_BLUE}PCPPTech{RESET}.
-                This project was created to {BOLD}enhance my programming skills and help others.{RESET}
-                YES!! {COLOR_GREEN}You can use this code for your startup, or your projects!{RESET}
-                Just please give credits ;P
-                The code might be a *little* bit messy — I'm the worst programmer tbh, but feel free to modify it to your liking!
-                Feel free to friend me on {COLOR_PINK}Discord{RESET}: {COLOR_RED}eidnoxon{RESET}
-                {COLOR_GREEN}Eidnoxon (PCPPTech) Out, bye :3{RESET}
+                {COLOR_GREEN}myTerminal{RESET} was made by {COLOR_BLUE}Yikebones{RESET}.
+                This project was created to {BOLD}practice my programming skills{RESET}.
+                {COLOR_GREEN} Yes, you can use the source code however you'd like, just give credits.{RESET}
+                The code is a little messy, I admit, but I'll try to work on that in the future.
             """))
 
         # customization part (user freewill)
